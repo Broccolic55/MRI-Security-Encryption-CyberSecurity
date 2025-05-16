@@ -1,0 +1,86 @@
+<!-- frontend/templates/user.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patient Access - SecureXway</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>SecureXway</h1>
+            <p>Patient Access</p>
+        </header>
+        
+        <main>
+            <div class="form-container">
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        {% for category, message in messages %}
+                            {% if category == 'error' and 'SECURITY ALERT' in message %}
+                                <!-- Special formatting for security alerts -->
+                                <div class="security-alert-box">
+                                    <div class="security-alert-icon">
+                                        <i class="fas fa-shield-alt"></i>
+                                    </div>
+                                    <div class="security-alert-content">
+                                        <h3>Security Alert</h3>
+                                        {{ message }}
+                                    </div>
+                                </div>
+                            {% else %}
+                                <div class="alert alert-{{ category }}">{{ message }}</div>
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+                
+                <!-- Show security blocked message if applicable -->
+                {% if session.get('security_block') %}
+                    <div class="blocked-access-notice">
+                        <h2>Access Blocked for Your Security</h2>
+                        <p>We've detected potential tampering with your medical data files. For your safety and to protect the integrity of your medical information, access has been temporarily blocked.</p>
+                        <div class="security-steps">
+                            <h3>What to do now:</h3>
+                            <ol>
+                                <li>Contact your healthcare provider immediately</li>
+                                <li>Check your email for a detailed security alert</li>
+                                <li>Do not attempt to access these files again until your provider confirms they are secure</li>
+                            </ol>
+                        </div>
+                    </div>
+                {% endif %}
+                
+                <!-- Only show the form if not security blocked -->
+                {% if not session.get('security_block') %}
+                    <h2>Patient Access</h2>
+                    <p>Enter your patient number to access your medical images.</p>
+                    
+                    <form action="{{ url_for('user') }}" method="post">
+                        <div class="form-group">
+                            <label for="patient_id">Patient ID:</label>
+                            <input type="text" id="patient_id" name="patient_id" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <button type="submit" class="btn">Access Medical Image</button>
+                        </div>
+                    </form>
+                {% endif %}
+                
+                <div class="back-link">
+                    <a href="{{ url_for('index') }}">Back to Home</a>
+                </div>
+            </div>
+        </main>
+        
+        <footer>
+            <p>&copy; 2025 SecureXway. All rights reserved.</p>
+        </footer>
+    </div>
+    
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>

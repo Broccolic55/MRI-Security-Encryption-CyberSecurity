@@ -1,0 +1,100 @@
+<!-- frontend/templates/admin_dashboard.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - SecureXway</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>SecureXway</h1>
+            <p>Admin Dashboard</p>
+            <nav>
+                <ul>
+                    <li><a href="{{ url_for('index') }}">Home</a></li>
+                    <li><a href="{{ url_for('logout') }}">Logout</a></li>
+                </ul>
+            </nav>
+            <!-- Hamburger Menu Button -->
+            <div class="hamburger-menu" id="hamburger-menu">
+                <i class="fas fa-bars"></i>
+            </div>
+        </header>
+        
+        <!-- Slide-out Panel -->
+        <div class="side-panel" id="side-panel">
+            <div class="panel-header">
+                <h3>Patient Data Integrity</h3>
+                <button class="close-panel" id="close-panel">&times;</button>
+            </div>
+            <div class="panel-content">
+                <div class="integrity-check-form">
+                    <h4>Verify Data Integrity</h4>
+                    <div class="form-group">
+                        <label for="verify-patient-id">Patient ID:</label>
+                        <input type="text" id="verify-patient-id" placeholder="Enter patient ID">
+                    </div>
+                    <button class="btn verify-btn" id="verify-data-btn">Verify Integrity</button>
+                </div>
+                <div class="integrity-results" id="integrity-results">
+                    <!-- Results will be populated here -->
+                </div>
+            </div>
+        </div>
+        
+        <main>
+            <div class="dashboard-container">
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        {% for category, message in messages %}
+                            <div class="alert alert-{{ category }}">{{ message }}</div>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+                
+                <h2>Upload Medical Image for Encryption</h2>
+                
+                <form action="{{ url_for('admin_dashboard') }}" method="post" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <label for="patient_num">Patient ID:</label>
+                        <input type="text" id="patient_num" name="patient_num" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="patient_email">Patient Email:</label>
+                        <input type="email" id="patient_email" name="patient_email" class="form-control" required>
+                        <small class="form-text text-muted">Required for sending OTP when patient accesses their MRI</small>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="mri_image">Medical Image:</label>
+                        <input type="file" id="mri_image" name="mri_image" accept="image/*" required>
+                        <p class="help-text">This is the sensitive Medical image that will be encrypted.</p>
+                    </div>
+                    
+                    <div class="info-box">
+                        <p><strong>Note:</strong> A cover image will be automatically selected.</p>
+                    </div>
+                    
+                    <div class="form-group">
+                        <button type="submit" class="btn">Encrypt and Store</button>
+                    </div>
+                </form>
+            </div>
+        </main>
+        
+        <!-- Overlay for when panel is open -->
+        <div id="overlay" class="overlay"></div>
+        
+        <footer>
+            <p>&copy; 2025 SecureXway. All rights reserved.</p>
+        </footer>
+    </div>
+    
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>

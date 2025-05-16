@@ -1,0 +1,64 @@
+<!-- frontend/templates/download_file.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Download Medical Image - SecureXway</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>SecureXway</h1>
+            <p>Download Your Medical image</p>
+        </header>
+        
+        <main>
+            <div class="form-container">
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        {% for category, message in messages %}
+                            <div class="alert alert-{{ category }}">
+                                {% if category == 'error' and 'SECURITY' in message %}
+                                <i class="fas fa-exclamation-triangle"></i>
+                                <strong>SECURITY ALERT:</strong>
+                                {% endif %}
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+                
+                <h2>Medical Image Successfully Decrypted</h2>
+                <p>Your Medical image has been successfully decrypted and is ready for download.</p>
+                
+                <div class="download-container">
+                    <a href="{{ url_for('download') }}" class="btn btn-download">Download Medical Image</a>
+                    <a href="{{ url_for('index') }}" class="btn btn-home">Return to Home</a>
+                </div>
+                
+                <div class="security-notice">
+                    <h3>Security Notice</h3>
+                    <p>This Medical image has been securely decrypted just for you. Please note:</p>
+                    <ul>
+                        <li>This file will only be available for download once.</li>
+                        <li>For security reasons, the decrypted file will be automatically deleted after download.</li>
+                        <li>Please store the file securely on your device.</li>
+                    </ul>
+                </div>
+                
+                <div class="back-link">
+                    <a href="{{ url_for('index') }}">Back to Home</a>
+                </div>
+            </div>
+        </main>
+        
+        <footer>
+            <p>&copy; 2025 SecureXway. All rights reserved.</p>
+        </footer>
+    </div>
+    
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>

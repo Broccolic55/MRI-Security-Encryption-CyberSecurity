@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Download Medical Image - SecureXway</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>SecureXway</h1>
+            <p>Secure Medical Image Access</p>
+        </header>
+        
+        <main>
+            <section class="card">
+                <h2>Download Your Medical Image</h2>
+                
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        <div class="messages">
+                            {% for category, message in messages %}
+                                <div class="alert alert-{{ category }}">{{ message }}</div>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                {% endwith %}
+                
+                <div class="download-container">
+                    <p>Patient ID: <strong>{{ session.pending_patient_id }}</strong></p>
+                    
+                    <div class="button-group">
+                        <a href="{{ url_for('view_image') }}" class="btn primary" target="_blank">View MRI Image</a>
+                        <a href="{{ url_for('download') }}" class="btn">Download Medical Image</a>
+                    </div>
+                </div>
+                
+                <div class="encryption-info">
+                    <h3>File Security Information</h3>
+                    <ol>
+                        <li>Your Medical Image has been encrypted using multi-layer security.</li>
+                        <li>The authentication process validates your identity.</li>
+                        <li>The image is decrypted only when you access it.</li>
+                    </ol>
+                </div>
+                
+                <div class="security-notice">
+                    <h3>Security Notice</h3>
+                    <p>For your privacy and security:</p>
+                    <ul>
+                        <li>Do not share your login credentials with others.</li>
+                        <li>Download your files to a secure device.</li>
+                        <li>Log out when finished.</li>
+                    </ul>
+                </div>
+                
+                <div class="actions">
+                    <a href="{{ url_for('logout') }}" class="btn secondary">Logout</a>
+                </div>
+            </section>
+        </main>
+        
+        <footer>
+            <p>&copy; 2025 SecureXway. All rights reserved.</p>
+        </footer>
+    </div>
+</body>
+</html>
